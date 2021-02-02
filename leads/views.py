@@ -20,6 +20,13 @@ def lead_detail(request, pk):
     return render(request, "leads/lead_detail.html", context)
 
 
+
+def lead_delete(request, pk):
+    lead = Lead.objects.get(id=pk)
+    lead.delete()
+    return render(request, "leads/lead_delete.html")
+
+
 def lead_create(request):
     form = LeadModelForm
     if request.method == "POST":
