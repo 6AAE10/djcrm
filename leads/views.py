@@ -1,11 +1,22 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.shortcuts import HttpResponse
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
 from .forms import LeadModelForm
 
 
+class LandingPageView(TemplateView):
+    template_name = "landing.html"
+
+
 def landing_page(request):
     return render(request, "landing.html")
+
+
+class LeadListView(ListView):
+    template_name = "leads/lead_list.html"
+    queryset = Lead.objects.all()
+    context_object_name = "leads"
 
 
 def lead_list(request):
@@ -16,6 +27,12 @@ def lead_list(request):
     return render(request, "leads/lead_list.html", context)
 
 
+class LeadDetailView(DetailView):
+    template_name = "leads/lead_detail.html"
+    queryset = Lead.objects.all()
+    context_object_name = "lead"
+
+
 def lead_detail(request, pk):
     lead = Lead.objects.get(id=pk)
     context = {
@@ -24,11 +41,26 @@ def lead_detail(request, pk):
     return render(request, "leads/lead_detail.html", context)
 
 
+class LeadDeleteView(DeleteView):
+    template_name = "leads/lead_delete.html"
+    queryset = Lead.objects.all()
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
 
 def lead_delete(request, pk):
     lead = Lead.objects.get(id=pk)
     lead.delete()
     return render(request, "leads/lead_delete.html")
+
+
+class LeadCreateView(CreateView):
+    template_name = "leads/lead_create.html"
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
 
 
 def lead_create(request):
@@ -43,6 +75,15 @@ def lead_create(request):
         "form": form
     }
     return render(request, "leads/lead_create.html", context)
+
+
+class LeadUpdateView(UpdateView):
+    template_name = "leads/lead_update.html"
+    queryset = Lead.objects.all()
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
 
 
 def lead_update(request, pk):
