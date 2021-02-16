@@ -1,8 +1,18 @@
 from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.forms import UserCreationForm
+from django.views import generic
 from django.shortcuts import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Lead, Agent
-from .forms import LeadModelForm
+from .forms import LeadModelForm, CustomUserCreationForm
+
+
+class SignupView(generic.CreateView):
+    template_name = "registration/signup.html"
+    form_class = CustomUserCreationForm
+
+    def get_success_url(self):
+        return reverse("login")
 
 
 class LandingPageView(TemplateView):

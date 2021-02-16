@@ -128,3 +128,5 @@ STATICFILES_DIRS = [
 STATIC_ROOT = "static_root"
 
 AUTH_USER_MODEL = 'leads.User'
+
+LOGIN_REDIRECT_URL = '/leads/'
