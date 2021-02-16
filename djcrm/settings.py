@@ -130,3 +130,4 @@ STATIC_ROOT = "static_root"
 AUTH_USER_MODEL = 'leads.User'
 
 LOGIN_REDIRECT_URL = '/leads/'
+LOGIN_URL = '/login'
