@@ -29,11 +29,12 @@ class Agent(models.Model):
     organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.first_name
+        return self.user.username
 
 
 def post_user_created_signal(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
 
 post_save.connect(post_user_created_signal, sender=User)
